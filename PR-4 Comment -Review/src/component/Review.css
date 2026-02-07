@@ -1,0 +1,143 @@
+body {
+  background: #f2f4f7;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.r-continer {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.r-continer h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #1f2937;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.r-layout {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.r-form-box {
+  flex: 1;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.r-form-box h3 {
+  margin-bottom: 15px;
+  color: #2563eb;
+  font-size: 20px;
+}
+
+.r-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.r-form input,
+.r-form textarea,
+.r-form select {
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.r-form textarea {
+  resize: none;
+  height: 100px;
+}
+
+.r-form input:focus,
+.r-form textarea:focus,
+.r-form select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.r-form button {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.r-form button:hover {
+  background: #1e40af;
+}
+
+.r-error {
+  color: #dc2626;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.r-output {
+  flex: 1.2;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.r-output h3 {
+  margin-bottom: 15px;
+  color: #111827;
+  font-size: 20px;
+}
+
+.r-card {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #e5e7eb;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.r-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.r-card h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 16px;
+}
+
+.r-card h5 {
+  margin: 4px 0;
+  font-weight: normal;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.r-card p {
+  margin: 8px 0;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.r-card span {
+  font-size: 18px;
+  color: #f59e0b;
+}
