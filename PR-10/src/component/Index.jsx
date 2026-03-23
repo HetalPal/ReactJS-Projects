@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/style.css";
-
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
 const Home = () => {
   return (
     <>
