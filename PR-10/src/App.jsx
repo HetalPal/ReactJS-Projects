@@ -3,7 +3,7 @@ import Header from "./component/Header";
 import AddMenu from "./component/AddMenu";
 import MenuList from "./component/MenuList";
 import EditMenu from "./component/EditMenu";
-
+import Home from "./component/Index";
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +11,8 @@ function App() {
       <Header />
 
       <Routes>
+
+        <Route path="/" element={<Home />} />
 
         {/* STARTER */}
         <Route path="/add-starter" element={<AddMenu category="starter" />} />
@@ -29,6 +31,8 @@ function App() {
         <Route path="/dessert-list" element={<MenuList category="dessert" />} />
 
         <Route path="/edit-menu/:id" element={<EditMenu />} />
+
+        
       </Routes>
 
     </BrowserRouter>

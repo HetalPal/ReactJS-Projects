@@ -1,4 +1,41 @@
 {
-  "menus": [],
+  "menus": [
+    {
+      "id": "xEvA-2a8Qhs",
+      "name": "Masala Papad",
+      "price": "50",
+      "description": "simple papad with vegetables,sev,chutnies",
+      "image": "https://t4.ftcdn.net/jpg/09/34/65/85/360_F_934658531_7yhFm5BQ6NJ9lieQr9hc31RFqMe1cycQ.jpg",
+      "status": true,
+      "category": "starter"
+    },
+    {
+      "id": "_x_1p161RRg",
+      "name": "Gujarati Thali",
+      "price": "950",
+      "description": "A full dish with dal,rice,3 vegetables,farsan,mishtan",
+      "image": "https://img.freepik.com/premium-photo/veg-thali-from-indian-cuisine-food-platter-consists-variety-veggiespaneer-dish-lentils-jeera-riceroti-sweet-dish-curd-onion-etc-selective-focus_726363-885.jpg?semt=ais_hybrid&w=740&q=80",
+      "status": true,
+      "category": "main"
+    },
+    {
+      "id": "cKYx6PAHClY",
+      "name": "Watermelon-Lime Slushie",
+      "price": "750",
+      "description": "watermelon lime slushie is a refreshing and hydrating way to beat the heat",
+      "image": "https://img.buzzfeed.com/thumbnailer-prod-us-east-1/15fb648346e14399bc1cf59e1784da99/fb.jpg?resize=1200:*",
+      "status": false,
+      "category": "drink"
+    },
+    {
+      "id": "-Jyx7GPISR4",
+      "name": "Gajar Ka Halwa",
+      "price": "450",
+      "description": "Carrot dessert with milk, sugar, and cardamom",
+      "image": "https://wpmedia.prabhatkhabar.com/uploads/2024/11/Winter-Season-Food.jpg",
+      "status": true,
+      "category": "dessert"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
