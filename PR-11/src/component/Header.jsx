@@ -2,79 +2,107 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAsync } from "../services/actions/authAction";
 
 function Header() {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuth } = useSelector(state => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logoutAsync());
+    navigate("/login");
+  };
+
   return (
     <>
+
       <style>
         {`
-        :root {
-          --gold: #C9A84C;
-          --dark: #0E0D0B;
-          --dark2: #1A1814;
-          --cream: #F5F0E8;
-        }
+:root {
+  --gold: #C9A84C;
+  --dark: #0E0D0B;
+  --dark2: #1A1814;
+  --cream: #F5F0E8;
+}
 
-        .noma-nav {
-          background: rgba(14,13,11,.95) !important;
-          padding: 20px 60px;
-        }
+.noma-nav {
+  background: rgba(14,13,11,.95) !important;
+  padding: 20px 60px;
+}
 
-        .nav-logo {
-          font-size: 26px;
-          letter-spacing: .18em;
-          color: var(--cream) !important;
-        }
+.nav-logo {
+  font-size: 26px;
+  letter-spacing: .18em;
+  color: var(--cream) !important;
+}
 
-        .nav-links .nav-link {
-          font-size: 11px;
-          letter-spacing: .22em;
-          text-transform: uppercase;
-          color: rgba(245,240,232,.65) !important;
-          margin-right: 20px;
-        }
+.nav-links .nav-link {
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,.65) !important;
+  margin-right: 20px;
+}
 
-        .nav-links .nav-link:hover {
-          color: var(--gold) !important;
-        }
+.nav-links .nav-link:hover {
+  color: var(--gold) !important;
+}
 
-        .nav-cta {
-          font-size: 10px;
-          letter-spacing: .22em;
-          text-transform: uppercase;
-          color: var(--gold);
-          border: 1px solid var(--gold);
-          padding: 8px 18px;
-          margin-left: 20px;
-          text-decoration: none;
-        }
+.nav-cta {
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 8px 18px;
+  margin-left: 20px;
+  text-decoration: none;
+  background: transparent;
+}
 
-        .nav-cta:hover {
-          background: var(--gold);
-          color: var(--dark);
-        }
+.nav-cta:hover {
+  background: var(--gold);
+  color: var(--dark);
+}
 
-        /* Dropdown */
-        .custom-dropdown .dropdown-menu {
-          background: var(--dark2);
-          border: 1px solid rgba(245,240,232,.1);
-        }
+.logout-btn {
+  margin-left: 15px;
+  border: 1px solid red;
+  color: red;
+  padding: 8px 18px;
+  font-size: 10px;
+  letter-spacing: .2em;
+  background: transparent;
+}
 
-        .custom-dropdown .dropdown-item {
-          font-size: 11px;
-          color: rgba(245,240,232,.6);
-        }
+.logout-btn:hover {
+  background: red;
+  color: white;
+}
 
-        .custom-dropdown .dropdown-item:hover {
-          background: rgba(201,168,76,.1);
-          color: var(--gold);
-        }
-      `}
+.custom-dropdown .dropdown-menu {
+  background: var(--dark2);
+  border: 1px solid rgba(245,240,232,.1);
+}
+
+.custom-dropdown .dropdown-item {
+  font-size: 11px;
+  color: rgba(245,240,232,.6);
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background: rgba(201,168,76,.1);
+  color: var(--gold);
+}
+`}
       </style>
 
       <Navbar expand="lg" className="noma-nav">
-
         <Container>
 
           <Navbar.Brand as={Link} to="/" className="nav-logo">
@@ -89,32 +117,44 @@ function Header() {
 
               <Nav.Link as={Link} to="/">Home</Nav.Link>
 
-              <NavDropdown title="Starter" className="custom-dropdown">
-                <NavDropdown.Item as={Link} to="/add-starter">Add Starter</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/starter-list">View Starter</NavDropdown.Item>
-              </NavDropdown>
-              
-              <NavDropdown title="Drink" className="custom-dropdown">
-                <NavDropdown.Item as={Link} to="/add-drink">Add Drink</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/drink-list">View Drink</NavDropdown.Item>
-              </NavDropdown>
+              {isAuth && (
+                <>
+                  <NavDropdown title="Starter" className="custom-dropdown">
+                    <NavDropdown.Item as={Link} to="/add-starter">Add Starter</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/starter-list">View Starter</NavDropdown.Item>
+                  </NavDropdown>
 
-              <NavDropdown title="Dessert" className="custom-dropdown">
-                <NavDropdown.Item as={Link} to="/add-dessert">Add Dessert</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/dessert-list">View Dessert</NavDropdown.Item>
-              </NavDropdown>
+                  <NavDropdown title="Drink" className="custom-dropdown">
+                    <NavDropdown.Item as={Link} to="/add-drink">Add Drink</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/drink-list">View Drink</NavDropdown.Item>
+                  </NavDropdown>
+
+                  <NavDropdown title="Dessert" className="custom-dropdown">
+                    <NavDropdown.Item as={Link} to="/add-dessert">Add Dessert</NavDropdown.Item>
+                    <NavDropdown.Item as={Link} to="/dessert-list">View Dessert</NavDropdown.Item>
+                  </NavDropdown>
+                </>
+              )}
 
             </Nav>
 
-            <Link to="/" className="nav-cta">
-              BOOK TABLE
-            </Link>
+            {/* RIGHT SIDE BUTTONS */}
+            {isAuth ? (
+              <button onClick={handleLogout} className="logout-btn">
+                LOGOUT
+              </button>
+            ) : (
+              <Link to="/login" className="nav-cta">
+                LOGIN
+              </Link>
+            )}
 
           </Navbar.Collapse>
 
         </Container>
       </Navbar>
     </>
+
   );
 }
 

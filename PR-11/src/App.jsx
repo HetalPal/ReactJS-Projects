@@ -4,6 +4,9 @@ import AddMenu from "./component/AddMenu";
 import MenuList from "./component/MenuList";
 import EditMenu from "./component/EditMenu";
 import Home from "./component/Index";
+import Login from "./component/Login";
+import Register from "./component/Register";
+
 function App() {
   return (
     <BrowserRouter>
@@ -32,6 +35,9 @@ function App() {
 
         <Route path="/edit-menu/:id" element={<EditMenu />} />
 
+        {/* LOGIN */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
       </Routes>
 
