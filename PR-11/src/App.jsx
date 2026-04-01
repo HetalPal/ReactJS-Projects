@@ -32,7 +32,7 @@ function App() {
 
         <Route path="/edit-menu/:id" element={<EditMenu />} />
 
-        
+
       </Routes>
 
     </BrowserRouter>

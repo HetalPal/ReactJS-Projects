@@ -114,7 +114,6 @@ const AddMenuPage = ({ category }) => {
         }
       `}</style>
 
-      {/* MAIN */}
       <div className="reservation-section">
 
         {/* LEFT IMAGE */}
@@ -128,7 +127,6 @@ const AddMenuPage = ({ category }) => {
           />
         </div>
 
-        {/* RIGHT FORM */}
         <div className="reservation-form">
 
           {/* 🔥 SAME AS EDIT HEADER */}

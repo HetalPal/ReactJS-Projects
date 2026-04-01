@@ -51,7 +51,7 @@ const EditMenu = () => {
 
     const obj = {
       ...formData,
-      id: id, // ✅ Firebase string id
+      id: id, 
       price: Number(formData.price),
       category: menu.category
     };
@@ -62,7 +62,7 @@ const EditMenu = () => {
 
   return (
     <>
-      {/* ───────── CSS (UNCHANGED) ───────── */}
+      
       <style>{`
         :root {
           --gold:#C9A84C;

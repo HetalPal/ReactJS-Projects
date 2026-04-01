@@ -9,8 +9,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-/* ACTIONS */
-
 export const loading = () => ({ type: "LOADING" });
 export const errorMsg = (msg) => ({ type: "ERROR", payload: msg });
 
@@ -41,8 +39,6 @@ const snapshotToArray = (snapshot) => {
   });
   return arr;
 };
-
-/* ================== FIREBASE ================== */
 
 // GET ALL
 export const getAllMenuAsync = () => {
