@@ -27,30 +27,44 @@ const AddMenuPage = ({ category }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
+    console.log("Selected file:", file);
     if (!file) return;
+
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
 
   const uploadImage = async () => {
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "MenuImage");
+    try {
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "MenuImage");
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dg5p06d68/image/upload",
-      { method: "POST", body: data }
-    );
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dg5p06d68/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
-    const result = await res.json();
-    return result.secure_url;
+      const result = await res.json();
+      console.log("Cloudinary response:", result);
+
+      return result.secure_url;
+    } catch (error) {
+      console.log("Upload error:", error);
+      return "";
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let imageUrl = "";
-    if (image) imageUrl = await uploadImage();
+    if (image) {
+      imageUrl = await uploadImage();
+    }
 
     const newMenu = {
       ...formData,
@@ -58,6 +72,8 @@ const AddMenuPage = ({ category }) => {
       category,
       image: imageUrl,
     };
+
+    console.log("Final Data:", newMenu);
 
     dispatch(addMenuAsync(newMenu));
     navigate(`/${category}-list`);
@@ -126,12 +142,6 @@ const AddMenuPage = ({ category }) => {
       marginBottom: "10px",
     },
 
-    sub: {
-      fontSize: "13px",
-      color: "rgba(245,240,232,.5)",
-      marginBottom: "30px",
-    },
-
     input: {
       background: "transparent",
       border: "none",
@@ -181,7 +191,6 @@ const AddMenuPage = ({ category }) => {
   return (
     <div style={styles.page}>
       <div style={styles.box}>
-
         <div style={styles.left}>
           <img
             style={styles.img}
@@ -189,15 +198,14 @@ const AddMenuPage = ({ category }) => {
               preview ||
               "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
             }
+            alt="preview"
           />
           <div style={styles.overlay}></div>
         </div>
 
-        <div style={styles.right}>
+        <form style={styles.right} onSubmit={handleSubmit}>
           <div style={styles.label}>Add Dish</div>
           <div style={styles.title}>Create Your Menu</div>
-          <div style={styles.sub}>
-          </div>
 
           <input
             style={styles.input}
@@ -205,6 +213,7 @@ const AddMenuPage = ({ category }) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -214,6 +223,7 @@ const AddMenuPage = ({ category }) => {
             name="price"
             value={formData.price}
             onChange={handleChange}
+            required
           />
 
           <textarea
@@ -228,6 +238,7 @@ const AddMenuPage = ({ category }) => {
             style={styles.input}
             type="file"
             onChange={handleImageChange}
+            accept="image/*"
           />
 
           <select
@@ -240,11 +251,10 @@ const AddMenuPage = ({ category }) => {
             <option value="false">Not Available</option>
           </select>
 
-          <button style={styles.btn}>
+          <button type="submit" style={styles.btn}>
             Add Menu
           </button>
-        </div>
-
+        </form>
       </div>
     </div>
   );
