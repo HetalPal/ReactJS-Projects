@@ -9,13 +9,17 @@ const EditMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { menu } = useSelector(state => state);
+  const { menu } = useSelector(state => state.menu);
+
+  const [imageFile, setImageFile] = useState(null);
+  const [preview, setPreview] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     description: "",
     image: "",
+    status: true,
   });
 
   // fetch data
@@ -23,7 +27,6 @@ const EditMenu = () => {
     dispatch(getMenuAsync(id));
   }, [dispatch, id]);
 
-  // set data
   useEffect(() => {
     if (menu) {
       setFormData({
@@ -31,207 +34,157 @@ const EditMenu = () => {
         price: menu.price || "",
         description: menu.description || "",
         image: menu.image || "",
+        status: menu.status ?? true,
       });
+
+      setPreview(menu.image || "");
     }
+
+
   }, [menu]);
 
-  // handle change
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setFormData({
       ...formData,
-      [name]: value
+      [name]: name === "status" ? value === "true" : value,
+    });
+
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const uploadImage = async () => {
+    const data = new FormData();
+    data.append("file", imageFile);
+    data.append("upload_preset", "MenuImage");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dg5p06d68/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const result = await res.json();
+    return result.secure_url;
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setPreview("");
+    setFormData({
+      ...formData,
+      image: ""
     });
   };
 
-  // submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let imageUrl = formData.image;
+
+    if (imageFile) {
+      imageUrl = await uploadImage();
+    }
 
     const obj = {
       ...formData,
-      id: id, 
+      id: id,
       price: Number(formData.price),
-      category: menu.category
+      category: menu.category,
+      image: imageUrl
     };
 
     dispatch(updateMenuAsync(obj));
     navigate(`/${menu.category}-list`);
+
   };
 
   return (
-    <>
-      
-      <style>{`
-        :root {
-          --gold:#C9A84C;
-          --dark:#0E0D0B;
-          --dark2:#1A1814;
-          --cream:#F5F0E8;
-        }
+    <> <div className="reservation-section">
 
-        .reservation-section {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          min-height: 100vh;
-        }
+      <div className="reservation-img">
+        <img
+          src={
+            preview ||
+            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+          }
+          alt="preview"
+        />
+      </div>
 
-        .reservation-img {
-          position: relative;
-        }
+      <div className="reservation-form">
 
-        .reservation-img img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform .5s;
-        }
+        <span className="label">Edit Item</span>
 
-        .reservation-img:hover img {
-          transform: scale(1.05);
-        }
+        <h2>Refine <em>Your Dish</em></h2>
 
-        .reservation-img-overlay {
-          position: absolute;
-          inset: 0;
-          background: rgba(14,13,11,.4);
-        }
+        <form onSubmit={handleSubmit}>
 
-        .reservation-form {
-          background: var(--cream);
-          color: var(--dark);
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding: 80px;
-        }
+          <div className="form-row">
+            <input
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Name"
+            />
 
-        .label {
-          font-size: 10px;
-          letter-spacing: .3em;
-          text-transform: uppercase;
-          color: var(--gold);
-          margin-bottom: 20px;
-        }
+            <input
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Price"
+            />
+          </div>
 
-        .reservation-form h2 {
-          font-size: 32px;
-          margin-bottom: 40px;
-        }
-
-        .form-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-        }
-
-        .form-field {
-          display: flex;
-          flex-direction: column;
-          margin-bottom: 20px;
-        }
-
-        .form-field label {
-          font-size: 10px;
-          letter-spacing: .2em;
-          margin-bottom: 6px;
-        }
-
-        .form-field input {
-          border: none;
-          border-bottom: 1px solid rgba(0,0,0,.2);
-          padding: 10px 0;
-          outline: none;
-          background: transparent;
-        }
-
-        .form-field input:focus {
-          border-bottom: 1px solid var(--gold);
-        }
-
-        .btn-dark {
-          margin-top: 30px;
-          padding: 16px;
-          background: var(--dark);
-          color: var(--cream);
-          border: none;
-          letter-spacing: .2em;
-          cursor: pointer;
-        }
-      `}</style>
-
-      {/* ───────── UI (SAME) ───────── */}
-      <div className="reservation-section">
-
-        {/* LEFT IMAGE */}
-        <div className="reservation-img">
-          <img
-            src={formData.image || "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"}
-            alt="preview"
+          <input
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Description"
           />
-          <div className="reservation-img-overlay"></div>
-        </div>
 
-        {/* RIGHT FORM */}
-        <div className="reservation-form">
+          {/* IMAGE UPLOAD */}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
 
-          <span className="label">Edit Item</span>
-
-          <h2>
-            Refine <em>Your Dish</em>
-          </h2>
-
-          <form onSubmit={handleSubmit}>
-
-            <div className="form-row">
-              <div className="form-field">
-                <label>Name</label>
-                <input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="form-field">
-                <label>Price</label>
-                <input
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="form-field">
-              <label>Description</label>
-              <input
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-field">
-              <label>Image URL</label>
-              <input
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-              />
-            </div>
-
-            <button className="btn-dark">
-              Update Menu
+          {preview && (
+            <button type="button" onClick={handleRemoveImage}>
+              Remove Image
             </button>
+          )}
 
-          </form>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+          >
+            <option value="true">Available</option>
+            <option value="false">Not Available</option>
+          </select>
 
-        </div>
+          <button className="btn-dark">
+            Update Menu
+          </button>
+
+        </form>
 
       </div>
+
+    </div>
     </>
+
+
   );
 };
 

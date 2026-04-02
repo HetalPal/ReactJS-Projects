@@ -17,7 +17,7 @@ function Header() {
     dispatch(logoutAsync());
     navigate("/login");
   };
-
+  
   return (
     <>
 
@@ -138,7 +138,6 @@ function Header() {
 
             </Nav>
 
-            {/* RIGHT SIDE BUTTONS */}
             {isAuth ? (
               <button onClick={handleLogout} className="logout-btn">
                 LOGOUT
