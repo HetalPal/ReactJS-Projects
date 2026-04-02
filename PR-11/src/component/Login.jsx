@@ -2,73 +2,149 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginAsync } from "../services/actions/authAction";
 import { useNavigate, Link } from "react-router-dom";
-import { Container, Form, Button, Card } from "react-bootstrap";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { isAuth, error, loading } = useSelector((state) => state.auth);
 
-    const { isAuth, error, loading } = useSelector(state => state.auth);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginAsync(email, password));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(loginAsync(email, password));
-    };
+  useEffect(() => {
+    if (isAuth) navigate("/");
+  }, [isAuth]);
+  
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      background: "#0E0D0B",
+      fontFamily: "'Jost', sans-serif",
+    },
 
-    useEffect(() => {
-        if (isAuth) {
-            navigate("/");
-        }
-    }, [isAuth]);
+    card: {
+      width: "420px",
+      padding: "40px",
+      background: "#1A1814",
+      border: "1px solid rgba(201,168,76,.25)",
+      boxShadow: "0 25px 70px rgba(0,0,0,.6)",
+      color: "#F5F0E8",
+    },
 
-    return (<Container className="d-flex justify-content-center align-items-center vh-100">
+    title: {
+      fontFamily: "'Cormorant Garamond', serif",
+      fontSize: "32px",
+      fontWeight: "300",
+      textAlign: "center",
+      marginBottom: "25px",
+    },
 
-        ```
-        <Card style={{ width: "400px", padding: "20px" }}>
-            <h3 className="text-center mb-3">Login</h3>
+    label: {
+      fontSize: "10px",
+      letterSpacing: "0.25em",
+      color: "#C9A84C",
+      textTransform: "uppercase",
+      marginBottom: "6px",
+    },
 
-            {error && <p className="text-danger">{error}</p>}
+    input: {
+      width: "100%",
+      background: "transparent",
+      border: "none",
+      borderBottom: "1px solid rgba(245,240,232,.2)",
+      padding: "12px 0",
+      color: "#F5F0E8",
+      outline: "none",
+      marginBottom: "20px",
+      fontSize: "14px",
+    },
 
-            <Form onSubmit={handleSubmit}>
+    btn: {
+      width: "100%",
+      padding: "14px",
+      background: "#C9A84C",
+      border: "none",
+      color: "#0E0D0B",
+      letterSpacing: "0.2em",
+      textTransform: "uppercase",
+      cursor: "pointer",
+      transition: "0.3s",
+      fontWeight: "500",
+    },
 
-                <Form.Group className="mb-3">
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </Form.Group>
+    error: {
+      color: "#ff4d4d",
+      fontSize: "12px",
+      marginBottom: "10px",
+      textAlign: "center",
+    },
 
-                <Form.Group className="mb-3">
-                    <Form.Control
-                        type="password"
-                        placeholder="Enter Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </Form.Group>
+    link: {
+      color: "#C9A84C",
+      textDecoration: "none",
+    },
 
-                <Button type="submit" className="w-100" disabled={loading}>
-                    {loading ? "Please wait..." : "Login"}
-                </Button>
+    footer: {
+      marginTop: "20px",
+      textAlign: "center",
+      fontSize: "13px",
+      color: "rgba(245,240,232,.5)",
+    },
+  };
 
-            </Form>
+  return (
+    <div style={styles.page}>
+      <div style={styles.card}>
 
-            <p className="mt-3 text-center">
-                Don't have account? <Link to="/register">Register</Link>
-            </p>
+        <div style={styles.title}>Login</div>
 
-        </Card>
+        {error && <div style={styles.error}>{error}</div>}
 
-    </Container>
+        <form onSubmit={handleSubmit}>
 
+          <div style={styles.label}>Email</div>
+          <input
+            style={styles.input}
+            type="email"
+            placeholder="Enter Email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-    );
+          <div style={styles.label}>Password</div>
+          <input
+            style={styles.input}
+            type="password"
+            placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button style={styles.btn} disabled={loading}>
+            {loading ? "Please wait..." : "Login"}
+          </button>
+
+        </form>
+
+        <div style={styles.footer}>
+          Don't have account?{" "}
+          <Link style={styles.link} to="/register">
+            Register
+          </Link>
+        </div>
+
+      </div>
+    </div>
+  );
 }
 
 export default Login;

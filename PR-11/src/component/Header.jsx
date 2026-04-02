@@ -17,10 +17,9 @@ function Header() {
     dispatch(logoutAsync());
     navigate("/login");
   };
-  
+
   return (
     <>
-
       <style>
         {`
 :root {
@@ -30,29 +29,34 @@ function Header() {
   --cream: #F5F0E8;
 }
 
+/* NAVBAR */
 .noma-nav {
   background: rgba(14,13,11,.95) !important;
   padding: 20px 60px;
 }
 
+/* LOGO */
 .nav-logo {
   font-size: 26px;
   letter-spacing: .18em;
   color: var(--cream) !important;
 }
 
+/* LINKS */
 .nav-links .nav-link {
   font-size: 11px;
   letter-spacing: .22em;
   text-transform: uppercase;
   color: rgba(245,240,232,.65) !important;
   margin-right: 20px;
+  transition: 0.2s;
 }
 
 .nav-links .nav-link:hover {
   color: var(--gold) !important;
 }
 
+/* LOGIN BUTTON */
 .nav-cta {
   font-size: 10px;
   letter-spacing: .22em;
@@ -63,6 +67,7 @@ function Header() {
   margin-left: 20px;
   text-decoration: none;
   background: transparent;
+  transition: 0.3s;
 }
 
 .nav-cta:hover {
@@ -72,19 +77,23 @@ function Header() {
 
 .logout-btn {
   margin-left: 15px;
-  border: 1px solid red;
-  color: red;
+  border: 1px solid var(--gold);
+  color: var(--gold);
   padding: 8px 18px;
   font-size: 10px;
-  letter-spacing: .2em;
+  letter-spacing: .22em;
+  text-transform: uppercase;
   background: transparent;
+  transition: all .25s ease;
 }
 
 .logout-btn:hover {
-  background: red;
-  color: white;
+  background: var(--gold);
+  color: var(--dark);
+  box-shadow: 0 0 10px rgba(201,168,76,.5);
 }
 
+/* DROPDOWN */
 .custom-dropdown .dropdown-menu {
   background: var(--dark2);
   border: 1px solid rgba(245,240,232,.1);
@@ -153,7 +162,6 @@ function Header() {
         </Container>
       </Navbar>
     </>
-
   );
 }
 

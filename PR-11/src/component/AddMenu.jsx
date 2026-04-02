@@ -4,7 +4,6 @@ import { addMenuAsync } from "../services/actions/menuAction";
 import { useNavigate } from "react-router-dom";
 
 const AddMenuPage = ({ category }) => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,17 +19,15 @@ const AddMenuPage = ({ category }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: name === "status" ? value === "true" : value,
-    });
-
+    }));
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
+    if (!file) return;
     setImage(file);
     setPreview(URL.createObjectURL(file));
   };
@@ -42,10 +39,7 @@ const AddMenuPage = ({ category }) => {
 
     const res = await fetch(
       "https://api.cloudinary.com/v1_1/dg5p06d68/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
+      { method: "POST", body: data }
     );
 
     const result = await res.json();
@@ -56,10 +50,7 @@ const AddMenuPage = ({ category }) => {
     e.preventDefault();
 
     let imageUrl = "";
-
-    if (image) {
-      imageUrl = await uploadImage();
-    }
+    if (image) imageUrl = await uploadImage();
 
     const newMenu = {
       ...formData,
@@ -70,91 +61,192 @@ const AddMenuPage = ({ category }) => {
 
     dispatch(addMenuAsync(newMenu));
     navigate(`/${category}-list`);
+  };
 
-    setFormData({
-      name: "",
-      price: "",
-      description: "",
-      status: true,
-    });
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      background: "#0E0D0B",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontFamily: "'Jost', sans-serif",
+      padding: "40px",
+    },
 
-    setImage(null);
-    setPreview("");
+    box: {
+      width: "950px",
+      height: "600px",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      background: "#1A1814",
+      border: "1px solid rgba(201,168,76,.25)",
+      boxShadow: "0 30px 80px rgba(0,0,0,.6)",
+      overflow: "hidden",
+    },
 
+    left: {
+      position: "relative",
+    },
 
+    img: {
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      filter: "contrast(1.1) brightness(.85)",
+    },
+
+    overlay: {
+      position: "absolute",
+      inset: 0,
+      background:
+        "linear-gradient(to top, rgba(14,13,11,.85), transparent)",
+    },
+
+    right: {
+      padding: "60px",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      color: "#F5F0E8",
+    },
+
+    label: {
+      fontSize: "10px",
+      letterSpacing: "0.3em",
+      color: "#C9A84C",
+      textTransform: "uppercase",
+      marginBottom: "10px",
+    },
+
+    title: {
+      fontFamily: "'Cormorant Garamond', serif",
+      fontSize: "34px",
+      fontWeight: "300",
+      marginBottom: "10px",
+    },
+
+    sub: {
+      fontSize: "13px",
+      color: "rgba(245,240,232,.5)",
+      marginBottom: "30px",
+    },
+
+    input: {
+      background: "transparent",
+      border: "none",
+      borderBottom: "1px solid rgba(245,240,232,.2)",
+      padding: "12px 0",
+      color: "#F5F0E8",
+      outline: "none",
+      marginBottom: "20px",
+      fontSize: "14px",
+    },
+
+    textarea: {
+      background: "transparent",
+      border: "none",
+      borderBottom: "1px solid rgba(245,240,232,.2)",
+      padding: "12px 0",
+      color: "#F5F0E8",
+      outline: "none",
+      marginBottom: "20px",
+      fontSize: "14px",
+      resize: "none",
+      height: "70px",
+    },
+
+    select: {
+      background: "transparent",
+      border: "none",
+      borderBottom: "1px solid rgba(245,240,232,.2)",
+      padding: "12px 0",
+      color: "#F5F0E8",
+      marginBottom: "25px",
+      outline: "none",
+    },
+
+    btn: {
+      background: "#C9A84C",
+      color: "#0E0D0B",
+      border: "none",
+      padding: "14px",
+      letterSpacing: "0.2em",
+      textTransform: "uppercase",
+      cursor: "pointer",
+      transition: "0.3s",
+    },
   };
 
   return (
-    <> <div className="reservation-section">
+    <div style={styles.page}>
+      <div style={styles.box}>
 
-      <div className="reservation-img">
-        <img
-          src={
-            preview ||
-            "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
-          }
-          alt="food"
-        />
-      </div>
+        <div style={styles.left}>
+          <img
+            style={styles.img}
+            src={
+              preview ||
+              "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+            }
+          />
+          <div style={styles.overlay}></div>
+        </div>
 
-      <div className="reservation-form">
-
-        <span className="label">Add Item</span>
-
-        <h2>Create <em>Your Dish</em></h2>
-
-        <form onSubmit={handleSubmit}>
-
-          <div className="form-row">
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-
-            <input
-              type="number"
-              name="price"
-              placeholder="Enter Price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
+        <div style={styles.right}>
+          <div style={styles.label}>Add Dish</div>
+          <div style={styles.title}>Create Your Menu</div>
+          <div style={styles.sub}>
           </div>
 
           <input
-            type="text"
+            style={styles.input}
+            placeholder="Dish Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+
+          <input
+            style={styles.input}
+            placeholder="Price"
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+          />
+
+          <textarea
+            style={styles.textarea}
+            placeholder="Description"
             name="description"
-            placeholder="Enter Description"
             value={formData.description}
             onChange={handleChange}
           />
 
           <input
+            style={styles.input}
             type="file"
-            accept="image/*"
             onChange={handleImageChange}
           />
 
           <select
+            style={styles.select}
             name="status"
-            value={formData.status}
+            value={formData.status ? "true" : "false"}
             onChange={handleChange}
           >
             <option value="true">Available</option>
             <option value="false">Not Available</option>
           </select>
 
-          <button className="btn-dark">Add Menu</button>
+          <button style={styles.btn}>
+            Add Menu
+          </button>
+        </div>
 
-        </form>
       </div>
     </div>
-    </>
-
   );
 };
 
